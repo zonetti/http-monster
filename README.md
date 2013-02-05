@@ -1,6 +1,6 @@
 # http-monster
 
-A minimalist HTTP benchmarking.
+A minimalist HTTP benchmarking tool.
 
 ## Install
 

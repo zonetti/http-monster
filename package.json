@@ -1,6 +1,6 @@
 {
   "name": "http-monster",
-  "description": "A minimalist HTTP benchmarking.",
+  "description": "A minimalist HTTP benchmarking tool.",
   "keywords": ["http", "cli", "bench", "benchmarking", "request"],
   "version": "0.0.1alpha",
   "repository": {
