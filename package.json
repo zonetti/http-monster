@@ -1,19 +1,32 @@
 {
   "name": "http-monster",
-  "description": "A minimalist HTTP benchmarking tool.",
-  "keywords": ["http", "cli", "bench", "benchmarking", "request"],
-  "version": "0.0.1alpha",
+  "description": "A HTTP benchmarking toolkit for CLI.",
+  "keywords": [
+    "http",
+    "cli",
+    "bench",
+    "benchmarking",
+    "request",
+    "browser"
+  ],
+  "version": "0.0.2alpha",
   "repository": {
     "type": "git",
     "url": "https://github.com/zonetti/http-monster.git"
   },
   "bin": {
-    "httpmon": "./bin/httpmon"
+    "httpmon": "./bin/httpmon",
+    "httpmon-browser": "./bin/httpmon-browser"
   },
   "dependencies": {
-    "request": "2.12.0",
+    "underscore": "1.4.4",
     "commander": "1.1.1",
+    "request": "2.12.0",
     "colors": "0.6.0-1",
+    "async": "0.2.2",
     "progress": "git://github.com/zonetti/node-progress.git"
+  },
+  "optionalDependencies": {
+    "zombie": "1.4.1"
   }
 }

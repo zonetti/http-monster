@@ -1,0 +1,68 @@
+#!/usr/bin/env node
+
+var _ = require('underscore')
+  , program = require('commander')
+  , error = require('../lib/error');
+
+require('colors');
+
+try {
+  var zombieVersion = require('../package.json').optionalDependencies.zombie
+    , Browser = require('zombie')
+    , browser = new Browser({
+      debug: true,
+      runScripts: false
+    });
+} catch(err) {
+  error('Missing dependency', 'zombie@' + zombieVersion + ' or higher');
+}
+
+program
+  .version(require('../package.json').version)
+  .usage('<benchmarking file>')
+  .parse(process.argv);
+
+program.benchmarking = process.argv.pop();
+
+// validations
+
+if (process.argv.length === 1) {
+  process.exit();
+}
+
+try {
+  var benchmarking = JSON.parse(require('fs').readFileSync(program.benchmarking));
+} catch(err) {
+  error('Invalid JSON file', err.message);
+}
+
+if (_.isUndefined(benchmarking.targets) || !_.isArray(benchmarking.targets)) {
+  error('Invalid JSON file', 'File does not contain valid instructions')
+}
+
+// header of output
+
+console.log(
+  '\nhttpmon-browser ' +
+  ('(http-monster@' + program.version() + ')').white
+);
+console.log(new Date().toString() + '\n');
+console.log(
+  ('Headless browser powered by Zombie.js\n' +
+  '(http://zombie.labnotes.org)\n').yellow
+);
+
+// requesting
+
+if (benchmarking.authentication !== undefined) {
+  browser.visit(benchmarking.authentication.url, function() {
+    for (var field in benchmarking.authentication.form.fields) {
+      browser.fill(field, benchmarking.authentication.form.fields[field]);
+    }
+    browser.pressButton(benchmarking.authentication.form.submit, function() {
+      require('../lib/browse_targets')(browser, benchmarking.targets);
+    });
+  });
+} else {
+  require('../lib/browse_targets')(browser, benchmarking.targets);
+}

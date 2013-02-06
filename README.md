@@ -1,16 +1,20 @@
 # http-monster
 
-A minimalist HTTP benchmarking tool.
+A HTTP benchmarking toolkit for CLI written in NodeJS.
 
 ## Install
 
     $> [sudo] npm install http-monster -g
 
-## Basic usage
+## httpmon
+
+It looks like `ab`, but it is not.
+
+### Basic usage
 
     $> httpmon -n 15 -c 2 http://github.com
 
-## --help
+### --help
 
     Usage: httpmon [options] <url>
 
@@ -23,7 +27,28 @@ A minimalist HTTP benchmarking tool.
         -m, --method [http method]
         -a, --auth [username:password]
         -b, --body [param=value&param...]
-        -j, --json [{"key": "value"}] or [@/path/to/file.json]
+        -j, --json [{"key": "value"}] or [/path/to/file.json]
         -q, --querystring [param=value&param...]
         -i, --interval [ms]
         -t, --timeout [secs]
+
+## httpmon-browser
+
+It simulates a browser through [Zombie.js][zombie], so you can login into a website and then request internal routes. All you need to do is to setup a benchmarking file like `benchmarking.example.json`.
+
+**OBS:** Information about CSS Selectors and log-related issues can be found at [Zombie.js][zombie].
+
+### Basic usage
+
+    $> httpmon-browser benchmarking.json
+
+### --help
+
+    Usage: httpmon-browser <benchmarking file>
+
+      Options:
+
+        -h, --help
+        -V, --version
+
+[zombie]: http://zombie.labnotes.org
