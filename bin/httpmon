@@ -19,10 +19,14 @@ program
   .option('-j, --json [{"key": "value"}] or [/path/to/file.json]', 'request body as JSON')
   .option('-q, --querystring [param=value&param...]', 'querystring parameters')
   .option('-i, --interval [ms]', 'interval between requests (default: 0)', parseInt, 0)
-  .option('-t, --timeout [secs]', 'request timeout (default: 45)', parseInt, 45)
+  .option('-t, --timeout [secs]', 'request timeout (default: 30)', parseInt, 30)
   .parse(process.argv);
 
 program.url = process.argv.pop();
+
+process.on('uncaughtException', function(err) {
+  error('Unexpected error', err.message);
+});
 
 // validations
 
@@ -80,7 +84,7 @@ if (_.isNaN(program.interval)) {
 }
 
 if (_.isNaN(program.timeout) || program.timeout === 0) {
-  error('Invalid timeout', program.timeout, [20, 30, 60]);
+  error('Invalid timeout', program.timeout, [15, 45, 60]);
 }
 
 // header of output
