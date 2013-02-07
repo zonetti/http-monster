@@ -19,7 +19,7 @@ program
   .option('-j, --json [{"key": "value"}] or [/path/to/file.json]', 'request body as JSON')
   .option('-q, --querystring [param=value&param...]', 'querystring parameters')
   .option('-i, --interval [ms]', 'interval between requests (default: 0)', parseInt, 0)
-  .option('-t, --timeout [secs]', 'request timeout (default: 15)', parseInt, 15)
+  .option('-t, --timeout [secs]', 'request timeout (default: 45)', parseInt, 45)
   .parse(process.argv);
 
 program.url = process.argv.pop();
