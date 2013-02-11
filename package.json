@@ -24,7 +24,7 @@
     "request": "2.12.0",
     "colors": "0.6.0-1",
     "async": "0.2.2",
-    "progress": "git://github.com/zonetti/node-progress.git"
+    "progress-with-event": "0.1.0"
   },
   "optionalDependencies": {
     "zombie": "1.4.1"
