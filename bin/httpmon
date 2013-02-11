@@ -4,7 +4,7 @@ var _ = require('underscore')
   , program = require('commander')
   , error = require('../lib/error')
   , HTTPClient = require('../lib/http_client')
-  , ProgressBar = require('progress');
+  , ProgressBar = require('progress-with-event');
 
 require('colors');
 
