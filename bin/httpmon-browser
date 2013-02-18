@@ -2,24 +2,24 @@
 
 var _ = require('underscore')
   , program = require('commander')
-  , error = require('../lib/error');
+  , async = require('async')
+  , error = require('../lib/error')
+  , browse = require('../lib/browse')
+  , ProgressBar = require('progress-with-event');
 
 require('colors');
 
 try {
   var zombieVersion = require('../package.json').optionalDependencies.zombie
-    , Browser = require('zombie')
-    , browser = new Browser({
-      debug: true,
-      runScripts: false
-    });
+    , zombie = require('zombie');
 } catch(err) {
   error('Missing dependency', 'zombie@' + zombieVersion + ' or higher');
 }
 
 program
   .version(require('../package.json').version)
-  .usage('<benchmarking file>')
+  .usage('[options] <benchmarking file>')
+  .option('-c, --clients [num]', 'number of concurrent clients (default: 1)', parseInt, 1)
   .parse(process.argv);
 
 program.benchmarking = process.argv.pop();
@@ -37,8 +37,27 @@ try {
 }
 
 if (_.isUndefined(benchmarking.targets) || !_.isArray(benchmarking.targets)) {
-  error('Invalid JSON file', 'File does not contain valid instructions')
+  error('Invalid JSON file', 'File does not contain valid instructions');
 }
+
+if (_.isNaN(program.clients) || program.clients === 0) {
+  error('Invalid number of concurrent clients', program.clients, [5, 10, 20]);
+}
+
+// preparing report
+
+var totalRequests = 0
+  , report = {};
+
+for (var target in benchmarking.targets) {
+  report[benchmarking.targets[target].url] = {
+    requests: benchmarking.targets[target].requests,
+    requestDuration: [],
+    clientDuration: []
+  };
+  totalRequests += benchmarking.targets[target].requests * program.clients;
+}
+totalRequests += program.clients;
 
 // header of output
 
@@ -52,17 +71,47 @@ console.log(
   '(http://zombie.labnotes.org)\n').yellow
 );
 
+var progressBar = new ProgressBar('Requested '.yellow + ':percent '.white, {
+  total: totalRequests
+});
+
 // requesting
 
-if (benchmarking.authentication !== undefined) {
-  browser.visit(benchmarking.authentication.url, function() {
-    for (var field in benchmarking.authentication.form.fields) {
-      browser.fill(field, benchmarking.authentication.form.fields[field]);
-    }
-    browser.pressButton(benchmarking.authentication.form.submit, function() {
-      require('../lib/browse_targets')(browser, benchmarking.targets);
-    });
-  });
-} else {
-  require('../lib/browse_targets')(browser, benchmarking.targets);
-}
+var start = new Date().getTime();
+
+for (var i = 0; i < program.clients; i++)
+  browse(progressBar, benchmarking, report);
+
+// reporting
+
+progressBar.on('end', function() {
+  var duration = new Date().getTime() - start;
+  
+  console.log(
+    '\nRequested '.yellow + '100%'.white + ' - ' +
+    duration + 'ms (' + Math.floor(duration / 1000) + ' seconds)\n'
+  );
+
+  for (var target in report) {
+    var stats = report[target];
+    stats.perRequest = stats.perClient = 0;
+
+    for (var i = 0; i < stats.requestDuration.length; i++)
+      stats.perRequest += stats.requestDuration[i];
+
+    for (var i = 0; i < stats.clientDuration.length; i++)
+      stats.perClient += stats.clientDuration[i];
+
+    stats.requestsAverage = Math.floor(stats.perRequest / stats.requestDuration.length);
+    stats.clientsAverage = stats.perClient / stats.clientDuration.length;
+
+    console.log('Target: '.white + target);
+    console.log('  Total of requests: '.green + stats.requests * program.clients);
+    console.log('  Time per request (avg): '.green + stats.requestsAverage + 'ms');
+    console.log(
+      '  Time per client (avg): '.green + Math.floor(stats.clientsAverage) +
+      'ms (' + Math.floor(stats.clientsAverage / 1000) + ' seconds)\n'
+    );
+  }
+  process.exit();
+});

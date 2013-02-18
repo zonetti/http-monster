@@ -44,11 +44,12 @@ It simulates a browser through [Zombie.js][zombie], so you can login into a webs
 
 ### --help
 
-    Usage: httpmon-browser <benchmarking file>
+    Usage: httpmon-browser [options] <benchmarking file>
 
       Options:
 
         -h, --help
         -V, --version
+        -c, --clients [num]  number of concurrent clients (default: 1)
 
 [zombie]: http://zombie.labnotes.org
