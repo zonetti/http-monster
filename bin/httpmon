@@ -3,7 +3,7 @@
 var _ = require('underscore')
   , program = require('commander')
   , error = require('../lib/error')
-  , HTTPClient = require('../lib/http_client')
+  , request = require('../lib/request')
   , ProgressBar = require('progress-with-event');
 
 require('colors');
@@ -107,7 +107,7 @@ var progressBar = new ProgressBar('Requesting '.yellow + '[:bar] :percent'.white
 var start = new Date().getTime();
 
 for (var i = 0; i < program.clients; i++)
-  new HTTPClient(program, progressBar);
+  request(program, progressBar);
 
 // reporting
 
