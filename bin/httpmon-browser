@@ -103,15 +103,19 @@ progressBar.on('end', function() {
       stats.perClient += stats.clientDuration[i];
 
     stats.requestsAverage = Math.floor(stats.perRequest / stats.requestDuration.length);
-    stats.clientsAverage = stats.perClient / stats.clientDuration.length;
+    stats.clientsAverage = Math.floor(stats.perClient / stats.clientDuration.length);
 
     console.log('Target: '.white + target);
     console.log('  Total of requests: '.green + stats.requests * program.clients);
-    console.log('  Time per request (avg): '.green + stats.requestsAverage + 'ms');
     console.log(
-      '  Time per client (avg): '.green + Math.floor(stats.clientsAverage) +
-      'ms (' + Math.floor(stats.clientsAverage / 1000) + ' seconds)\n'
+      '  Time per request (avg): '.green + stats.requestsAverage +
+      'ms (' + Math.floor(stats.requestsAverage / 1000) + ' seconds)'
     );
+    console.log(
+      '  Time per client (avg): '.green + stats.clientsAverage +
+      'ms (' + Math.floor(stats.clientsAverage / 1000) + ' seconds)'
+    );
+    console.log('  Unfinished requests: '.yellow + stats.errors + '\n');
   }
   process.exit();
 });
