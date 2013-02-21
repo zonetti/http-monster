@@ -113,9 +113,8 @@ progressBar.on('end', function() {
     );
     console.log(
       '  Time per client (avg): '.green + stats.clientsAverage +
-      'ms (' + Math.floor(stats.clientsAverage / 1000) + ' seconds)'
+      'ms (' + Math.floor(stats.clientsAverage / 1000) + ' seconds)\n'
     );
-    console.log('  Unfinished requests: '.yellow + stats.errors + '\n');
   }
   process.exit();
 });
