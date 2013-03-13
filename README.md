@@ -1,7 +1,5 @@
 # http-monster
 
-A HTTP benchmarking toolkit for CLI written in NodeJS.
-
 ## Install
 
     $> [sudo] npm install http-monster -g
