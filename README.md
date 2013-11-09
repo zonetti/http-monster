@@ -1,16 +1,16 @@
 # http-monster
 
+I don't intend to maintain this repository. I made this as an excuse to play with `node.js` and `CLI`.
+
+If you are really looking for an HTTP benchmarking tool, make sure to take a look at [`ab`][ab] (Apache HTTP server benchmarking tool) and [`siege`][siege] (An HTTP/HTTPS stress tester). Those are awesome tools and MUCH more mature (I can't stress this enough).
+
 ## Install
 
     $> [sudo] npm install http-monster -g
 
-## httpmon
-
-It looks like `ab`, but it is not.
-
 ### Basic usage
 
-    $> httpmon -n 15 -c 2 http://github.com
+    $> httpmon -n 15 -c 2 -v http://github.com
 
 ### --help
 
@@ -18,36 +18,18 @@ It looks like `ab`, but it is not.
 
       Options:
 
-        -h, --help
-        -V, --version
-        -n, --requests [num]
-        -c, --clients [num]
-        -m, --method [http method]
-        -a, --auth [username:password]
-        -b, --body [param=value&param...]
-        -j, --json [{"key": "value"}] or [/path/to/file.json]
-        -q, --querystring [param=value&param...]
-        -i, --interval [ms]
-        -t, --timeout [secs]
+        -h, --help                                             output usage information
+        -V, --version                                          output the version number
+        -n, --requests [num]                                   number of requests per client (default: 50)
+        -c, --clients [num]                                    number of concurrent clients (default: 1)
+        -m, --method [http method]                             http method (default: get)
+        -a, --auth [username:password]                         http authentication
+        -b, --body [param=value&param...]                      request body (postfields)
+        -j, --json [{"key": "value"}] or [/path/to/file.json]  request body as JSON
+        -q, --querystring [param=value&param...]               querystring parameters
+        -t, --timeout [secs]                                   request timeout (default: 30)
+        -s, --series                                           request in series
+        -v, --verbose                                          verbose mode
 
-## httpmon-browser
-
-It simulates a browser through [Zombie.js][zombie], so you can login into a website and then request internal routes. All you need to do is to setup a benchmarking file like `benchmarking.example.json`.
-
-**OBS:** Information about CSS Selectors and log-related issues can be found at [Zombie.js][zombie].
-
-### Basic usage
-
-    $> httpmon-browser benchmarking.json
-
-### --help
-
-    Usage: httpmon-browser [options] <benchmarking file>
-
-      Options:
-
-        -h, --help
-        -V, --version
-        -c, --clients [num]  number of concurrent clients (default: 1)
-
-[zombie]: http://zombie.labnotes.org
+[ab]: http://httpd.apache.org/docs/2.2/programs/ab.html
+[siege]: http://www.joedog.org/siege-home/

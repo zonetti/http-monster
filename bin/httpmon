@@ -1,12 +1,8 @@
 #!/usr/bin/env node
 
-var _ = require('underscore')
-  , program = require('commander')
-  , error = require('../lib/error')
-  , request = require('../lib/request')
-  , ProgressBar = require('progress-with-event');
-
 require('colors');
+
+var program = global.program = require('commander');
 
 program
   .version(require('../package.json').version)
@@ -18,107 +14,10 @@ program
   .option('-b, --body [param=value&param...]', 'request body (postfields)')
   .option('-j, --json [{"key": "value"}] or [/path/to/file.json]', 'request body as JSON')
   .option('-q, --querystring [param=value&param...]', 'querystring parameters')
-  .option('-i, --interval [ms]', 'interval between requests (default: 0)', parseInt, 0)
   .option('-t, --timeout [secs]', 'request timeout (default: 30)', parseInt, 30)
+  .option('-s, --series', 'request in series')
+  .option('-v, --verbose', 'verbose mode')
   .parse(process.argv);
 
-program.url = process.argv.pop();
-
-process.on('uncaughtException', function(err) {
-  error('Unexpected error', err.message);
-});
-
-// validations
-
-if (process.argv.length === 1) {
-  process.exit();
-}
-
-var validURL = new RegExp('(http|https)://(www.|)[a-z0-9.]{1,}')
-  , validMethods = ['get', 'post', 'put', 'delete']
-  , validAuth = new RegExp('[ .#$*!\-_a-zA-Z0-9]{1,}:[ .#$*!\-_a-zA-Z0-9]{1,}')
-  , validParameters = new RegExp('[\-a-zA-Z0-9]{1,}=[\-a-zA-Z0-9]{1,}')
-
-if (!program.url.match(validURL)) {
-  error('Invalid URL', program.url, ['http://google.com', 'https://192.168.2.5:3000/path']);
-}
-
-if (_.indexOf(validMethods, program.method) === -1) {
-  error('Invalid HTTP method', program.method, validMethods);
-}
-
-if (program.auth && !program.auth.match(validAuth)) {
-  error('Invalid authentication', program.auth, ['username:password', 'us3rn4m3:lkp6!hiX']);
-}
-
-if (program.body && !program.body.match(validParameters)) {
-  error('Invalid body', program.body, 'param=value&another=value');
-}
-
-if (program.json) {
-  try {
-    if (program.json.charAt(0) !== '{') {
-      program.json = JSON.parse(require('fs').readFileSync(program.json));
-    } else {
-      program.json = JSON.parse(program.json);
-    }
-  } catch(err) {
-    error('Invalid JSON', program.json, ['{"key": "value", "hello": "world"}', '/path/to/file.json']);
-  }
-}
-
-if (program.querystring && !program.querystring.match(validParameters)) {
-  error('Invalid querystring', program.querystring, 'param=value&another=value');
-}
-
-if (_.isNaN(program.requests) || program.requests === 0) {
-  error('Invalid number of requests', program.requests, [100, 500, 1000]);
-}
-
-if (_.isNaN(program.clients) || program.clients === 0) {
-  error('Invalid number of concurrent clients', program.clients, [5, 10, 20]);
-}
-
-if (_.isNaN(program.interval)) {
-  error('Invalid interval', program.interval, [200, 500, 10000]);
-}
-
-if (_.isNaN(program.timeout) || program.timeout === 0) {
-  error('Invalid timeout', program.timeout, [15, 45, 60]);
-}
-
-// header of output
-
-console.log(
-  '\nhttpmon ' +
-  ('(http-monster@' + program.version() + ')').white
-);
-console.log(new Date().toString() + '\n');
-
-var progressBar = new ProgressBar('Requesting '.yellow + '[:bar] :percent'.white, {
-  complete: '=',
-  incomplete: ' ',
-  width: 20,
-  total: program.requests * program.clients
-});
-
-// instantiating http clients
-
-var start = new Date().getTime();
-
-for (var i = 0; i < program.clients; i++)
-  request(program, progressBar);
-
-// reporting
-
-progressBar.on('end', function() {
-  var duration = new Date().getTime() - start;
-  console.log(
-    'Time taken: '.green + duration +
-    'ms (' + Math.floor(duration / 1000) + ' seconds)'
-  );
-  console.log(
-    'Time per request (avg): '.green +
-    Math.floor(duration / program.requests) + 'ms\n'
-  );
-});
+require('../lib/validator');
+require('../lib/request')(require('../lib/report'));

@@ -1,6 +1,14 @@
 {
   "name": "http-monster",
-  "description": "A HTTP benchmarking toolkit for CLI.",
+  "version": "0.1.0",
+  "description": "A HTTP benchmarking tool for CLI",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zonetti/http-monster.git"
+  },
+  "bin": {
+    "httpmon": "./bin/httpmon"
+  },
   "keywords": [
     "http",
     "cli",
@@ -9,24 +17,12 @@
     "request",
     "browser"
   ],
-  "version": "0.0.4b",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/zonetti/http-monster.git"
-  },
-  "bin": {
-    "httpmon": "./bin/httpmon",
-    "httpmon-browser": "./bin/httpmon-browser"
-  },
   "dependencies": {
-    "underscore": "1.4.4",
-    "commander": "1.1.1",
-    "request": "2.12.0",
-    "colors": "0.6.0-1",
-    "async": "0.2.2",
-    "progress-with-event": "0.1.0"
-  },
-  "optionalDependencies": {
-    "zombie": "1.4.1"
+    "commander": "~2.0.0",
+    "colors": "~0.6.2",
+    "underscore": "~1.5.2",
+    "async": "~0.2.9",
+    "request": "~2.27.0",
+    "winston": "~0.7.2"
   }
 }
