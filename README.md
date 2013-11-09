@@ -8,11 +8,11 @@ If you are really looking for an HTTP benchmarking tool, make sure to take a loo
 
     $> [sudo] npm install http-monster -g
 
-### Basic usage
+## Basic usage
 
     $> httpmon -n 15 -c 2 -v http://github.com
 
-### --help
+## --help
 
     Usage: httpmon [options] <url>
 
