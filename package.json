@@ -1,6 +1,6 @@
 {
   "name": "http-monster",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A HTTP benchmarking tool for CLI",
   "repository": {
     "type": "git",
@@ -25,11 +25,11 @@
     "colors": "~0.6.2",
     "underscore": "~1.5.2",
     "request": "~2.27.0",
+    "async": "~0.2.9",
     "winston": "~0.7.2"
   },
   "devDependencies": {
     "mocha": "~1.14.0",
     "should": "~2.0.2",
-    "async": "~0.2.9"
   }
 }
