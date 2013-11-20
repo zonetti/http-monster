@@ -1,6 +1,6 @@
 {
   "name": "http-monster",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A HTTP benchmarking tool for CLI",
   "repository": {
     "type": "git",
@@ -8,6 +8,9 @@
   },
   "bin": {
     "httpmon": "./bin/httpmon"
+  },
+  "scripts": {
+    "test": "make test"
   },
   "keywords": [
     "http",
@@ -21,8 +24,12 @@
     "commander": "~2.0.0",
     "colors": "~0.6.2",
     "underscore": "~1.5.2",
-    "async": "~0.2.9",
     "request": "~2.27.0",
     "winston": "~0.7.2"
+  },
+  "devDependencies": {
+    "mocha": "~1.14.0",
+    "should": "~2.0.2",
+    "async": "~0.2.9"
   }
 }

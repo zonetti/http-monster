@@ -1,5 +1,7 @@
 # http-monster
 
+[![Build Status](https://secure.travis-ci.org/zonetti/http-monster.png)](http://travis-ci.org/zonetti/http-monster)
+
 I don't intend to maintain this repository. I made this as an excuse to play with `node.js` and `CLI`.
 
 If you are really looking for an HTTP benchmarking tool, make sure to take a look at [`ab`][ab] (Apache HTTP server benchmarking tool) and [`siege`][siege] (An HTTP/HTTPS stress tester). Those are awesome tools and MUCH more mature (I can't stress this enough).
