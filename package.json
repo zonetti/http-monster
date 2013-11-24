@@ -1,7 +1,8 @@
 {
   "name": "http-monster",
-  "version": "0.1.1",
   "description": "A HTTP benchmarking tool for CLI",
+  "version": "0.1.1",
+  "preferGlobal": "true",
   "repository": {
     "type": "git",
     "url": "https://github.com/zonetti/http-monster.git"
