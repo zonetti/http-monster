@@ -20,7 +20,7 @@ describe('Tests', function() {
     exec(
       httpmon + '--help',
       function(err, stdout, stderr) {
-        stdout.indexOf('Usage: httpmon [options] <url>').should.not.be.equal(-1);
+        stdout.should.contain('Usage: httpmon [options] <url>');
         done();
       }
     );
@@ -31,7 +31,7 @@ describe('Tests', function() {
     exec(
       httpmon + '--version',
       function(err, stdout, stderr) {
-        stdout.indexOf(version).should.not.be.equal(-1);
+        stdout.should.contain(version);
         done();
       }
     );
@@ -41,15 +41,15 @@ describe('Tests', function() {
     exec(
       httpmon + '-n 5 -c 2 -v http://localhost:3000?status=200',
       function(err, stdout, stderr) {
-        stdout.indexOf('Client #1 Request #5').should.not.be.equal(-1);
-        stdout.indexOf('Client #2 Request #5').should.not.be.equal(-1);
-        stdout.indexOf('Client #1 finished requesting').should.not.be.equal(-1);
-        stdout.indexOf('Client #2 finished requesting').should.not.be.equal(-1);
-        stdout.indexOf('Status: 200').should.not.be.equal(-1);
-        stdout.indexOf('Generating report...').should.not.be.equal(-1);
-        stdout.indexOf('Total time taken').should.not.be.equal(-1);
-        stdout.indexOf('Average time taken per client').should.not.be.equal(-1);
-        stdout.indexOf('Average time taken per request').should.not.be.equal(-1);
+        stdout.should.contain('Client #1 Request #5');
+        stdout.should.contain('Client #2 Request #5');
+        stdout.should.contain('Client #1 finished requesting');
+        stdout.should.contain('Client #2 finished requesting');
+        stdout.should.contain('Status: 200');
+        stdout.should.contain('Generating report...');
+        stdout.should.contain('Total time taken');
+        stdout.should.contain('Average time taken per client');
+        stdout.should.contain('Average time taken per request');
         done();
       }
     );
@@ -59,15 +59,15 @@ describe('Tests', function() {
     exec(
       httpmon + '-n 5 -c 2 http://localhost:3000?status=200',
       function(err, stdout, stderr) {
-        stdout.indexOf('Client #1 Request #5').should.be.equal(-1);
-        stdout.indexOf('Client #2 Request #5').should.be.equal(-1);
-        stdout.indexOf('Client #1 finished requesting').should.be.equal(-1);
-        stdout.indexOf('Client #2 finished requesting').should.be.equal(-1);
-        stdout.indexOf('Status: 200').should.be.equal(-1);
-        stdout.indexOf('Generating report...').should.be.equal(-1);
-        stdout.indexOf('Total time taken').should.not.be.equal(-1);
-        stdout.indexOf('Average time taken per client').should.not.be.equal(-1);
-        stdout.indexOf('Average time taken per request').should.not.be.equal(-1);
+        stdout.should.not.contain('Client #1 Request #5');
+        stdout.should.not.contain('Client #2 Request #5');
+        stdout.should.not.contain('Client #1 finished requesting');
+        stdout.should.not.contain('Client #2 finished requesting');
+        stdout.should.not.contain('Status: 200');
+        stdout.should.not.contain('Generating report...');
+        stdout.should.contain('Total time taken');
+        stdout.should.contain('Average time taken per client');
+        stdout.should.contain('Average time taken per request');
         done();
       }
     );
@@ -79,13 +79,13 @@ describe('Tests', function() {
         httpmon + '-n 1 -v http://localhost:3000?status=' + status,
         function(err, stdout, stderr) {
           if (err) return callback(err);
-          stdout.indexOf('Client #1 Request #1').should.not.be.equal(-1);
-          stdout.indexOf('Client #1 finished requesting').should.not.be.equal(-1);
-          stdout.indexOf('Status: ' + status).should.not.be.equal(-1);
-          stdout.indexOf('Generating report...').should.not.be.equal(-1);
-          stdout.indexOf('Total time taken').should.not.be.equal(-1);
-          stdout.indexOf('Average time taken per client').should.not.be.equal(-1);
-          stdout.indexOf('Average time taken per request').should.not.be.equal(-1);
+          stdout.should.contain('Client #1 Request #1');
+          stdout.should.contain('Client #1 finished requesting');
+          stdout.should.contain('Status: ' + status);
+          stdout.should.contain('Generating report...');
+          stdout.should.contain('Total time taken');
+          stdout.should.contain('Average time taken per client');
+          stdout.should.contain('Average time taken per request');
           callback();
         }
       );
