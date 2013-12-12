@@ -1,6 +1,4 @@
-# http-monster
-
-[![Build Status](https://secure.travis-ci.org/zonetti/http-monster.png)](http://travis-ci.org/zonetti/http-monster)
+# http-monster [![Build Status](https://secure.travis-ci.org/zonetti/http-monster.png)](http://travis-ci.org/zonetti/http-monster)
 
 I don't intend to maintain this repository. I made this as an excuse to play with `node.js` and `CLI`.
 
